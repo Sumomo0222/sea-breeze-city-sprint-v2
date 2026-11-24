@@ -1,0 +1,115 @@
+
+</style>
+</head>
+<body>
+<canvas id="game"></canvas>
+<div id="ui">
+
+  <div id="hud" class="hidden">
+    <div class="box" id="hearts" aria-label="生命值"></div>
+    <div id="prog-wrap">
+      <div id="prog">
+        <i class="pseg p0"></i><i class="pseg p1"></i><i class="pseg p2"></i>
+        <i class="pmark" style="left:33%"></i><i class="pmark" style="left:69.6%"></i>
+        <div id="progFill"></div>
+        <div id="progCat"><svg viewBox="0 0 64 64"><path d="M13 27 8 6l19 12zM51 27 56 6 37 18z" fill="#F6A94B" stroke="#3A2216" stroke-width="3.5" stroke-linejoin="round"/><circle cx="32" cy="39" r="24" fill="#F6A94B" stroke="#3A2216" stroke-width="3.5"/><ellipse cx="23" cy="37" rx="3.2" ry="4.8" fill="#3A2216"/><ellipse cx="41" cy="37" rx="3.2" ry="4.8" fill="#3A2216"/><path d="M28.5 45.5h7L32 49z" fill="#FF7A8A"/></svg></div>
+      </div>
+      <div id="dist"><b id="distNow">0</b><span>/ 1000 m</span><em id="practiceTag">练习起跑</em></div>
+    </div>
+    <div id="hud-right">
+      <div class="box" id="coinbox"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#FFC83D" stroke="#1E2748" stroke-width="2.2"/><circle cx="12" cy="12" r="5.6" fill="none" stroke="#C8861C" stroke-width="2"/></svg><span id="coins">0</span></div>
+      <div class="box" id="timebox"><span id="time">00:00.0</span><small id="speed">0 km/h</small></div>
+      <button class="icon-btn" id="btnMute" aria-label="静音开关"><svg viewBox="0 0 24 24"><path id="mutePath" d="M4 9v6h4l5 4V5L8 9H4zm12.3-1.9-1.3 1.6A5 5 0 0 1 17 12a5 5 0 0 1-2 3.3l1.3 1.6A7 7 0 0 0 19 12a7 7 0 0 0-2.7-4.9z"/></svg></button>
+      <button class="icon-btn" id="btnPause" aria-label="暂停"><svg viewBox="0 0 24 24"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg></button>
+    </div>
+  </div>
+
+  <div id="banner"><div class="bcard" id="bcard"><span class="bnum" id="bNum">01</span><div class="btxt"><b id="bName">海边公路</b><i id="bEn">SEASIDE HIGHWAY</i></div></div></div>
+  <div id="countdown"></div>
+
+  <div id="title" class="overlay">
+    <section class="panel">
+      <svg class="mascot" viewBox="0 0 140 140" aria-hidden="true">
+        <path d="M27 58 19 12l44 28z" fill="#F6A94B" stroke="#3A2216" stroke-width="5" stroke-linejoin="round"/>
+        <path d="M113 58 121 12 77 40z" fill="#F6A94B" stroke="#3A2216" stroke-width="5" stroke-linejoin="round"/>
+        <path d="M31 47 27 24l22 14z" fill="#FFABB8"/><path d="M109 47l4-23-22 14z" fill="#FFABB8"/>
+        <ellipse cx="70" cy="84" rx="54" ry="48" fill="#F6A94B" stroke="#3A2216" stroke-width="5"/>
+        <path d="M62 37h6l-3 15zM72 37h6l-3 15zM50 42l5-2-1 14zM85 40l5 2-4 12z" fill="#D67A2A"/>
+        <ellipse cx="50" cy="82" rx="7" ry="10.5" fill="#3A2216"/><ellipse cx="90" cy="82" rx="7" ry="10.5" fill="#3A2216"/>
+        <circle cx="52.5" cy="78" r="2.6" fill="#fff"/><circle cx="92.5" cy="78" r="2.6" fill="#fff"/>
+        <ellipse cx="36" cy="100" rx="8" ry="5" fill="#FF8F9E" opacity=".7"/><ellipse cx="104" cy="100" rx="8" ry="5" fill="#FF8F9E" opacity=".7"/>
+        <path d="M64 96h12l-6 7z" fill="#FF7A8A" stroke="#3A2216" stroke-width="2.4" stroke-linejoin="round"/>
+        <path d="M70 103v5m0 0c-2 5-8 5-10 1m10-1c2 5 8 5 10 1" fill="none" stroke="#3A2216" stroke-width="2.6" stroke-linecap="round"/>
+        <path d="M12 90h18M14 101l17-4M128 90h-18M126 97l-17 4" stroke="#3A2216" stroke-width="2.4" stroke-linecap="round"/>
+        <path d="M30 126c10 8 70 8 80 0l-4 10H34z" fill="#FF4D5E" stroke="#3A2216" stroke-width="4" stroke-linejoin="round"/>
+      </svg>
+      <span class="tag"><i></i>1000M · 城市跑酷</span>
+      <h1>海风城市冲刺</h1>
+      <p class="sub">SEA BREEZE CITY SPRINT</p>
+      <p class="lead">小猫从海边公路出发，翻过城市高架，冲进霓虹灯牌街区，在 <b>1000m</b> 终点线前全力冲刺。躲开汽车、跃过路障，顺手把金币全带走。</p>
+      <ol class="route">
+        <li class="r0"><i><svg viewBox="0 0 24 24"><path d="M2 9c3-5 5-5 8 0s5 5 8 0M2 16c3-5 5-5 8 0s5 5 8 0"/></svg></i><div><b>海边公路</b><span>0 m</span></div></li>
+        <li class="r1"><i><svg viewBox="0 0 24 24"><path d="M3 19 9.5 5h5L21 19M3 19h18M12 19v-4m0-5v-3"/></svg></i><div><b>城市高架</b><span>330 m</span></div></li>
+        <li class="r2"><i><svg viewBox="0 0 24 24"><path d="M12 2 5 13.5h5.5L9 22l9-12.5h-6L13.5 2z"/></svg></i><div><b>灯牌街区</b><span>700 m</span></div></li>
+        <li class="r3"><i><svg viewBox="0 0 24 24"><path d="M6 22V3m0 1h11l-3 4.5 3 4.5H6"/></svg></i><div><b>终点线</b><span>1000 m</span></div></li>
+      </ol>
+      <div class="keys pad-only">
+        <span><kbd>←</kbd><kbd>→</kbd>换道</span>
+        <span><kbd>↑</kbd><kbd>空格</kbd>跳跃</span>
+        <span><kbd>↓</kbd>快落</span>
+        <span class="minor"><kbd>P</kbd>暂停 <kbd>M</kbd>静音</span>
+      </div>
+      <div class="keys touch-only">左右滑动换道 · 点按或上滑跳跃 · 下滑快速落地</div>
+      <div class="cta"><button id="btnStart" class="btn primary">开始冲刺</button><span id="best" class="best"></span></div>
+    </section>
+  </div>
+
+  <div id="result" class="overlay hidden">
+    <section class="panel result">
+      <span class="ribbon">1000M 完赛证书</span>
+      <h2>冲线！</h2>
+      <div class="stars" id="stars"></div>
+      <div class="newbest" id="newBest">新纪录！</div>
+      <dl class="stats">
+        <div><dt>用时</dt><dd id="rTime">0.0<small>s</small></dd></div>
+        <div><dt>金币</dt><dd id="rCoins">0</dd></div>
+        <div><dt>碰撞</dt><dd id="rHits">0<small>次</small></dd></div>
+        <div><dt>得分</dt><dd id="rScore">0</dd></div>
+      </dl>
+      <div class="row"><button id="btnAgain" class="btn primary">再来一次</button><button id="btnShare" class="btn sea">分享成绩</button></div>
+      <div class="best" id="rBest"></div>
+    </section>
+  </div>
+
+  <div id="over" class="overlay hidden">
+    <section class="panel result">
+      <span class="ribbon" style="background:var(--coral)">差一点点</span>
+      <h2 class="fail">被挡住了！</h2>
+      <p class="lead" style="margin-top:6px">小猫跑到了 <b id="oDist">0 m</b>，还差一点就冲线了。</p>
+      <dl class="stats">
+        <div><dt>距离</dt><dd id="oDist2">0<small>m</small></dd></div>
+        <div><dt>金币</dt><dd id="oCoins">0</dd></div>
+        <div><dt>用时</dt><dd id="oTime">0.0<small>s</small></dd></div>
+      </dl>
+      <div class="row"><button id="btnRetry" class="btn primary">重新挑战</button><button id="btnHome" class="btn">回到起点</button></div>
+    </section>
+  </div>
+
+  <div id="pause" class="overlay hidden">
+    <section class="panel result" style="width:min(420px,100%)">
+      <span class="ribbon" style="background:var(--sea)">休息一下</span>
+      <h2>暂停中</h2>
+      <div class="row"><button id="btnResume" class="btn primary">继续冲刺</button><button id="btnRestart" class="btn">重新开始</button></div>
+      <div class="row"><button id="btnSound" class="btn small">声音：开</button><button id="btnHome2" class="btn small">回到起点</button></div>
+    </section>
+  </div>
+
+  <div id="toast"></div>
+
+  <div id="touch" class="hidden">
+    <div class="tgroup"><button id="btnLeft" aria-label="向左换道"><svg viewBox="0 0 24 24"><path d="M15 4 7 12l8 8V4z"/></svg></button><button id="btnRight" aria-label="向右换道"><svg viewBox="0 0 24 24"><path d="M9 4l8 8-8 8V4z"/></svg></button></div>
+    <button id="btnJump" aria-label="跳跃"><svg viewBox="0 0 24 24"><path d="M12 3 4 13h5v8h6v-8h5z"/></svg></button>
+  </div>
+
+</div>
+<script>
