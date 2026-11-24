@@ -79,7 +79,7 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:30px
 #timebox small{font-family:var(--body);font-size:11px;font-weight:700;color:var(--ink2);letter-spacing:.04em}
 
 /* ---------- 阶段横幅 / 倒计时 ---------- */
-#banner{position:absolute;left:0;right:0;top:24%;display:flex;justify-content:center;opacity:0}
+#banner{position:absolute;left:0;right:0;top:max(9%,86px);display:flex;justify-content:center;opacity:0}
 #banner.show{opacity:1}
 .bcard{display:flex;align-items:center;gap:14px;background:var(--cream);border:3px solid var(--ink);border-radius:24px;box-shadow:6px 6px 0 var(--ink);padding:12px 28px 12px 14px;transform:translateX(-40px) scale(.85);opacity:0}
 #banner.show .bcard{animation:bannerIn 2.7s cubic-bezier(.2,1,.3,1) forwards}
@@ -169,6 +169,11 @@ h2.fail{color:var(--coral)}
   #prog-wrap{grid-area:prog;max-width:none;padding-top:0}
   #dist{margin-top:7px;font-size:15px;white-space:nowrap}
   #dist b{font-size:18px}
+  /* 竖屏：HUD 占两行，标牌放在 HUD 下方、地平线上方，不压道路 */
+  #banner{top:calc(108px + env(safe-area-inset-top))}
+  .bcard{padding:10px 20px 10px 12px}
+  .bnum{font-size:30px;min-width:52px;padding:8px 10px}
+  .btxt b{font-size:24px}
   .box{font-size:17px;padding:5px 11px}
   #hearts svg{width:18px;height:18px}
   .stats dd{font-size:22px}
@@ -193,6 +198,12 @@ h2.fail{color:var(--coral)}
   #dist b{font-size:17px}
   #touch button{width:62px;height:62px}
   #btnJump{width:82px!important;height:82px!important}
+  /* 横屏手机：高度太小，标牌靠左放在生命值下方，避开中间的道路 */
+  #banner{top:52px;justify-content:flex-start;padding-left:14px}
+  .bcard{padding:8px 16px 8px 10px;gap:10px}
+  .bnum{font-size:24px;min-width:42px;padding:6px 8px;border-radius:12px}
+  .btxt b{font-size:19px}
+  .btxt i{font-size:8px;letter-spacing:.2em}
 }
 @media (max-height:560px){
   .panel{padding:20px 28px 18px}
@@ -1630,11 +1641,8 @@ function drawCat(x, y, u, o) {
   limb(-15, -44 + hy, hL[0], hL[1] + hy, 9.5, fur); limb(15, -44 + hy, hR[0], hR[1] + hy, 9.5, fur);
   c.fillStyle = cream; c.strokeStyle = ink; c.lineWidth = LW;
   for (const h of [hL, hR]) { c.beginPath(); c.arc(h[0], h[1] + hy, 5.3, 0, TAU); c.fill(); c.stroke(); }
-  /* 腿和后脚掌 */
-  const fL = air ? [-13, -15] : [-10.5 - liftL * 1.2, -5 - liftL * 10], fR = air ? [13, -15] : [10.5 + liftR * 1.2, -5 - liftR * 10];
-  limb(-10, -17 + hy, fL[0], fL[1], 12.5, fur); limb(10, -17 + hy, fR[0], fR[1], 12.5, fur);
-  c.fillStyle = cream;
-  for (const f of [fL, fR]) { c.beginPath(); c.ellipse(f[0], f[1] + 1.5, 7, 5.6, 0, 0, TAU); c.fill(); c.stroke(); }
+  /* 脚掌位置：跑动时左右脚交替抬起（背视表现为向上收） */
+  const fL = air ? [-13.5, -14] : [-11 - liftL * 1.5, -3.5 - liftL * 10], fR = air ? [13.5, -14] : [11 + liftR * 1.5, -3.5 - liftR * 10];
   /* 身体 */
   c.fillStyle = fur; c.lineWidth = LW;
   c.beginPath(); c.moveTo(-16, -48 + hy);
@@ -1659,6 +1667,13 @@ function drawCat(x, y, u, o) {
   };
   tail(0, 1.1, 8 + LW * 2, ink, 'butt'); tail(0, 1, 8, fur, 'round');
   tail(0.46, 0.55, 8, rgb(FUR_D), 'butt'); tail(0.66, 0.75, 8, rgb(FUR_D), 'butt'); tail(0.86, 1, 8, rgb(FUR_D), 'round');
+  /* 脚掌：白色大圆掌，画在身体和尾巴之后，和橙色的身体明确分开，一眼看得出是两只脚 */
+  c.lineCap = 'round';
+  c.fillStyle = cream; c.strokeStyle = ink; c.lineWidth = LW;
+  for (const f of [fL, fR]) { c.beginPath(); c.ellipse(f[0], f[1], 8.2, 6.8, 0, 0, TAU); c.fill(); c.stroke(); }
+  c.lineWidth = 0.9; c.strokeStyle = 'rgba(58,32,22,0.45)'; c.beginPath();
+  for (const f of [fL, fR]) { c.moveTo(f[0] - 3, f[1] + 1.6); c.lineTo(f[0] - 3, f[1] + 4.6); c.moveTo(f[0] + 3, f[1] + 1.6); c.lineTo(f[0] + 3, f[1] + 4.6); }
+  c.stroke();
   /* 围巾：围脖 + 两条飘向左后方的巾尾 */
   const fl = run ? 1 : 0.35;
   limb(-4, -49 + hy, -17 + Math.sin(t * 9) * 3 * fl, -37 + Math.sin(t * 9 + 1) * 2, 5, rgb(SCARF));

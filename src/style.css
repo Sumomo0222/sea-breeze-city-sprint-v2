@@ -62,7 +62,7 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:30px
 #timebox small{font-family:var(--body);font-size:11px;font-weight:700;color:var(--ink2);letter-spacing:.04em}
 
 /* ---------- 阶段横幅 / 倒计时 ---------- */
-#banner{position:absolute;left:0;right:0;top:24%;display:flex;justify-content:center;opacity:0}
+#banner{position:absolute;left:0;right:0;top:max(9%,86px);display:flex;justify-content:center;opacity:0}
 #banner.show{opacity:1}
 .bcard{display:flex;align-items:center;gap:14px;background:var(--cream);border:3px solid var(--ink);border-radius:24px;box-shadow:6px 6px 0 var(--ink);padding:12px 28px 12px 14px;transform:translateX(-40px) scale(.85);opacity:0}
 #banner.show .bcard{animation:bannerIn 2.7s cubic-bezier(.2,1,.3,1) forwards}
@@ -152,6 +152,11 @@ h2.fail{color:var(--coral)}
   #prog-wrap{grid-area:prog;max-width:none;padding-top:0}
   #dist{margin-top:7px;font-size:15px;white-space:nowrap}
   #dist b{font-size:18px}
+  /* 竖屏：HUD 占两行，标牌放在 HUD 下方、地平线上方，不压道路 */
+  #banner{top:calc(108px + env(safe-area-inset-top))}
+  .bcard{padding:10px 20px 10px 12px}
+  .bnum{font-size:30px;min-width:52px;padding:8px 10px}
+  .btxt b{font-size:24px}
   .box{font-size:17px;padding:5px 11px}
   #hearts svg{width:18px;height:18px}
   .stats dd{font-size:22px}
@@ -176,6 +181,12 @@ h2.fail{color:var(--coral)}
   #dist b{font-size:17px}
   #touch button{width:62px;height:62px}
   #btnJump{width:82px!important;height:82px!important}
+  /* 横屏手机：高度太小，标牌靠左放在生命值下方，避开中间的道路 */
+  #banner{top:52px;justify-content:flex-start;padding-left:14px}
+  .bcard{padding:8px 16px 8px 10px;gap:10px}
+  .bnum{font-size:24px;min-width:42px;padding:6px 8px;border-radius:12px}
+  .btxt b{font-size:19px}
+  .btxt i{font-size:8px;letter-spacing:.2em}
 }
 @media (max-height:560px){
   .panel{padding:20px 28px 18px}

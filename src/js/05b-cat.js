@@ -27,11 +27,8 @@ function drawCat(x, y, u, o) {
   limb(-15, -44 + hy, hL[0], hL[1] + hy, 9.5, fur); limb(15, -44 + hy, hR[0], hR[1] + hy, 9.5, fur);
   c.fillStyle = cream; c.strokeStyle = ink; c.lineWidth = LW;
   for (const h of [hL, hR]) { c.beginPath(); c.arc(h[0], h[1] + hy, 5.3, 0, TAU); c.fill(); c.stroke(); }
-  /* 腿和后脚掌 */
-  const fL = air ? [-13, -15] : [-10.5 - liftL * 1.2, -5 - liftL * 10], fR = air ? [13, -15] : [10.5 + liftR * 1.2, -5 - liftR * 10];
-  limb(-10, -17 + hy, fL[0], fL[1], 12.5, fur); limb(10, -17 + hy, fR[0], fR[1], 12.5, fur);
-  c.fillStyle = cream;
-  for (const f of [fL, fR]) { c.beginPath(); c.ellipse(f[0], f[1] + 1.5, 7, 5.6, 0, 0, TAU); c.fill(); c.stroke(); }
+  /* 脚掌位置：跑动时左右脚交替抬起（背视表现为向上收） */
+  const fL = air ? [-13.5, -14] : [-11 - liftL * 1.5, -3.5 - liftL * 10], fR = air ? [13.5, -14] : [11 + liftR * 1.5, -3.5 - liftR * 10];
   /* 身体 */
   c.fillStyle = fur; c.lineWidth = LW;
   c.beginPath(); c.moveTo(-16, -48 + hy);
@@ -56,6 +53,13 @@ function drawCat(x, y, u, o) {
   };
   tail(0, 1.1, 8 + LW * 2, ink, 'butt'); tail(0, 1, 8, fur, 'round');
   tail(0.46, 0.55, 8, rgb(FUR_D), 'butt'); tail(0.66, 0.75, 8, rgb(FUR_D), 'butt'); tail(0.86, 1, 8, rgb(FUR_D), 'round');
+  /* 脚掌：白色大圆掌，画在身体和尾巴之后，和橙色的身体明确分开，一眼看得出是两只脚 */
+  c.lineCap = 'round';
+  c.fillStyle = cream; c.strokeStyle = ink; c.lineWidth = LW;
+  for (const f of [fL, fR]) { c.beginPath(); c.ellipse(f[0], f[1], 8.2, 6.8, 0, 0, TAU); c.fill(); c.stroke(); }
+  c.lineWidth = 0.9; c.strokeStyle = 'rgba(58,32,22,0.45)'; c.beginPath();
+  for (const f of [fL, fR]) { c.moveTo(f[0] - 3, f[1] + 1.6); c.lineTo(f[0] - 3, f[1] + 4.6); c.moveTo(f[0] + 3, f[1] + 1.6); c.lineTo(f[0] + 3, f[1] + 4.6); }
+  c.stroke();
   /* 围巾：围脖 + 两条飘向左后方的巾尾 */
   const fl = run ? 1 : 0.35;
   limb(-4, -49 + hy, -17 + Math.sin(t * 9) * 3 * fl, -37 + Math.sin(t * 9 + 1) * 2, 5, rgb(SCARF));
