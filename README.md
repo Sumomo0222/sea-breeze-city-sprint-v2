@@ -4,8 +4,9 @@
 
 **在线访问**
 
-- jsDelivr CDN：<https://cdn.jsdelivr.net/gh/Sumomo0222/sea-breeze-city-sprint-v2@main/index.html>
-- GitHub Pages：<https://sumomo0222.github.io/sea-breeze-city-sprint-v2/>
+<https://sumomo0222.github.io/sea-breeze-city-sprint-v2/>
+
+页面由 GitHub Pages 发布，经 GitHub 的 CDN 分发。曾经可用的 jsDelivr 镜像 `cdn.jsdelivr.net/gh/.../index.html` 现在会对 `.html` 文件返回 301 并跳到 GitHub 原始文件的纯文本地址，浏览器打开只会看到源码，所以这里不再列出。
 
 ## 玩法
 

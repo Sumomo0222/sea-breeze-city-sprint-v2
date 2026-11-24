@@ -18,9 +18,18 @@ function addPart(x, y, vx, vy, life, r, col, g) {
   if (PARTS.length > 280) PARTS.shift();
   PARTS.push({ x, y, vx, vy, life, max: life, r, col, g: g || 0 });
 }
-function addText(x, y, txt, col, size) {
+function addText(x, y, txt, col, size, key) {
   if (TEXTS.length > 12) TEXTS.shift();
-  TEXTS.push({ x, y, txt, col, life: 0.95, max: 0.95, size });
+  const t = { x, y, txt, col, life: 0.95, max: 0.95, size, n: 0, key };
+  TEXTS.push(t);
+  return t;
+}
+/* 连续吃金币时分数在同一个飘字上累加，避免小猫头顶叠出一摞 +10 */
+function coinText(x, y) {
+  const t = TEXTS.find(o => o.key === 'coin' && o.life > 0.45);
+  if (t) { t.n += 10; t.txt = '+' + t.n; t.life = t.max; t.size = Math.min(34, t.size + 0.6); t.x = x; return; }
+  const nt = addText(x, y - 18 * UX, '+10', '#FFE680', 24, 'coin');
+  nt.n = 10;
 }
 function burst(x, y, n, col, sp) {
   for (let i = 0; i < n; i++) {
@@ -113,7 +122,7 @@ function collect(it) {
   it.dead = true; G.coins++; G.score += 10; SFX.coin();
   const q = coinScreen(it);
   burst(q[0], q[1], 6, [255, 228, 120], 250);
-  addText(q[0], q[1] - 18 * UX, '+10', '#FFE680', 24);
+  coinText(q[0], q[1]);
   el.coinbox.classList.remove('bump'); void el.coinbox.offsetWidth; el.coinbox.classList.add('bump');
 }
 function hit(it) {
